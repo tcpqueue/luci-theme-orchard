@@ -168,3 +168,7 @@ tests/                           状态采样与安装校验
 ```
 
 上游组件来源与授权见 `NOTICE`、`LICENSE`。
+
+## 自动检查配置
+
+仓库附带 `docs/ci/github-actions.yml` 模板，执行与本地相同的三组校验。需要启用 GitHub Actions 时，把它放到 `.github/workflows/ci.yml`。工作流只使用仓库读取权限；通过 OAuth 推送工作流文件需要相应的 `workflow` 授权。本次发布保留配置模板，未启用 Actions。
