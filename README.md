@@ -3,6 +3,8 @@
 面向 OpenWrt 24.10 及之后版本的 LuCI 主题。界面借鉴 macOS 系统设置的分组、侧栏、圆角和控件层级，采用原生 HTML、CSS 与 JavaScript。路由器无需安装 Node.js，也不依赖 CDN、在线字体或前端框架。
 
 
+[![Check theme](https://github.com/tcpqueue/luci-theme-orchard/actions/workflows/ci.yml/badge.svg)](https://github.com/tcpqueue/luci-theme-orchard/actions/workflows/ci.yml)
+
 [下载发布版本](https://github.com/tcpqueue/luci-theme-orchard/releases/latest) · [检查记录](VALIDATION.md) · [反馈问题](https://github.com/tcpqueue/luci-theme-orchard/issues)
 
 ![Orchard 浅色界面](docs/images/desktop-light.jpg)
@@ -171,4 +173,4 @@ tests/                           状态采样与安装校验
 
 ## 自动检查配置
 
-仓库附带 `docs/ci/github-actions.yml` 模板，执行与本地相同的三组校验。需要启用 GitHub Actions 时，把它放到 `.github/workflows/ci.yml`。工作流只使用仓库读取权限；通过 OAuth 推送工作流文件需要相应的 `workflow` 授权。本次发布保留配置模板，未启用 Actions。
+仓库通过 `.github/workflows/ci.yml` 启用 GitHub Actions。每次推送和 Pull Request 自动检查状态采样与 JavaScript、插件菜单及安装脚本。工作流仅使用仓库读取权限，结果可在 [Actions](https://github.com/tcpqueue/luci-theme-orchard/actions) 查看。
