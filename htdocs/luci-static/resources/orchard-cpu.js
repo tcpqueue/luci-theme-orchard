@@ -27,8 +27,22 @@ return baseclass.extend({
   var previous = null, value = null, failed = false;
   var zh = (document.documentElement.lang || '').startsWith('zh');
   var label = zh ? 'CPU 使用率（%）' : 'CPU usage (%)';
+  var markOverview = function () {
+   var view = document.getElementById('view');
+   if (!view) return;
+   var names = [[_('System'), 'system'], [_('Memory'), 'memory'], [_('Storage'), 'storage']];
+   var sections = Array.from(view.children).filter(function (element) { return element.classList.contains('cbi-section'); });
+   var matches = names.map(function (entry) {
+    return sections.find(function (section) { return section.querySelector(':scope > h3')?.textContent.trim() === entry[0] && section.querySelector('table'); });
+   });
+   // Optional or failed includes retain the regular full-width layout.
+   matches.forEach(function (section, index) { if (section) section.classList.add('o-status-' + names[index][1]); });
+   if (matches.some(function (section) { return !section; })) return;
+   view.classList.add('o-status-grid');
+  };
   var render = function () {
-   var table = document.querySelector('#maincontent .cbi-section table');
+   markOverview();
+   var table = document.querySelector('#view > .o-status-system table');
    if (!table) return;
    var row = Array.from(table.rows).find(function (item) { return /^CPU\s*(使用率|usage)/i.test(item.cells[0]?.textContent || ''); });
    if (!row) {

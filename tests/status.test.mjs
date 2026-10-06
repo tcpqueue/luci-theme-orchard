@@ -23,6 +23,39 @@ assert.equal(cpu.usage(stat, { total: 500, idle: 360 }), null, 'CPU reset requir
 assert.equal(cpu.usage(stat, stat), null, 'zero interval cannot invent CPU usage');
 assert.equal(cpu.parse('cpu invalid 0 0 0'), null);
 assert.equal(cpu.parse('cpu0 1 2 3 4'), null, 'per-core rows are not aggregate CPU time');
+// Overview includes are optional, translated and may be preceded by plugin cards.
+function checkOverviewLayout(storageLoaded) {
+ const names = { System: 'Système', Memory: 'Mémoire', Storage: 'Stockage' };
+ function card(title, loaded = true) {
+  const classes = new Set(['cbi-section']);
+  return { classes, classList: { contains: name => classes.has(name), add: name => classes.add(name) },
+   querySelector: selector => selector === ':scope > h3' ? { textContent: title } : loaded ? {} : null };
+ }
+ const extra = card('Plugin'), system = card(names.System), memory = card(names.Memory), storage = card(names.Storage, storageLoaded);
+ const grid = new Set(), container = { children: [extra, system, memory, storage], classList: { add: name => grid.add(name) } };
+ let refresh;
+ const selectors = [];
+ const module = vm.runInNewContext('(function(){' + cpuSource + '})()', {
+  rpc: { declare: () => async () => '' }, baseclass: { extend: value => value },
+  _: name => names[name], L: { bind: (fn, self) => fn.bind(self) }, poll: { add: () => {} },
+  document: { documentElement: { lang: 'fr' }, getElementById: id => id === 'view' ? container : {}, querySelector: selector => { selectors.push(selector); return null; } },
+  MutationObserver: class { constructor(fn) { refresh = fn; } observe() {} }
+ });
+ module.monitor();
+ assert.equal(selectors[0], '#view > .o-status-system table', 'CPU belongs to the system card even when a plugin precedes it');
+ assert.equal(system.classes.has('o-status-system'), true, 'CPU card is marked even if storage is unavailable');
+ assert.equal(grid.has('o-status-grid'), storageLoaded, 'a missing include must keep the normal layout');
+ if (storageLoaded) {
+  assert.equal(system.classes.has('o-status-system'), true, 'localized system card is identified independently of position');
+  assert.equal(memory.classes.has('o-status-memory'), true);
+  assert.equal(storage.classes.has('o-status-storage'), true);
+  assert.equal(extra.classes.size, 1, 'plugin cards keep their original classes');
+  refresh();
+  assert.equal(grid.size, 1, 'polling mutations do not duplicate or move native containers');
+ }
+}
+checkOverviewLayout(true);
+checkOverviewLayout(false);
 const device = { getName: () => counters.name, getRXBytes: () => counters.rx, getTXBytes: () => counters.tx };
 const wan = { isUp: () => active, getL3Device: () => device, getName: () => 'wan', getI18n: () => 'DHCP', getIPAddrs: () => ['192.0.2.2'] };
 const context = vm.createContext({
@@ -84,4 +117,4 @@ for (const file of ['menu-orchard.js', 'orchard-cpu.js', 'view/orchard/overview.
 for (const file of ['orchard.js', 'overview-ui.js']) {
  new vm.Script(fs.readFileSync(path.join(root, 'htdocs/luci-static/orchard', file), 'utf8'));
 }
-console.log('PASS: CPU counters, rate sampling, mount lifecycle, resets, WAN absence, DHCP expiry, read-only ACL and JS syntax');
+console.log('PASS: CPU counters, rate sampling, mount lifecycle, resets, WAN absence, DHCP expiry, native overview layout, read-only ACL and JS syntax');

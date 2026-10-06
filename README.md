@@ -1,4 +1,4 @@
-# Orchard 0.2.0-r4
+# Orchard 0.2.0-r5
 
 面向 OpenWrt 24.10 及之后版本的 LuCI 主题。界面借鉴 macOS 系统设置的分组、侧栏、圆角和控件层级，采用原生 HTML、CSS 与 JavaScript。路由器无需安装 Node.js，也不依赖 CDN、在线字体或前端框架。
 
@@ -20,6 +20,8 @@ GitHub Releases 提供已经验证的 `.ipk`、源码压缩包与 `SHA256SUMS`�
 - 统一原有 LuCI 表单、表格、按钮、接口卡片、提示与弹窗样式。
 - 手机使用抽屉导航，支持键盘操作、焦点提示和减少动态效果。
 - 附带只读总览页：WAN 链路、接口流量、CPU 使用率、内存、负载、运行时间、IPv4 DHCP 租约及设备信息。
+- 原生状态概览在宽屏显示系统与内存、存储两栏，窄屏回退单栏。
+- nftables 防火墙状态使用规则链卡片、分组说明和规则标签。
 - 保留原有 LuCI 状态页、配置流程和保存应用机制。
 
 总览页位于 **状态 → Orchard**，不替换 LuCI 默认入口。切换回其他主题时，该入口会提示选择 Orchard，不加载主题的状态面板。
@@ -43,13 +45,13 @@ OpenWrt / ImmortalWrt 24.10 推荐使用 `.ipk`。本次软件包由 OpenWrt 24.
 上传软件包：
 
 ```sh
-scp -O luci-theme-orchard_0.2.0-r4_all.ipk root@192.168.1.1:/tmp/
+scp -O luci-theme-orchard_0.2.0-r5_all.ipk root@192.168.1.1:/tmp/
 ```
 
 在路由器上安装并激活：
 
 ```sh
-opkg install /tmp/luci-theme-orchard_0.2.0-r4_all.ipk
+opkg install /tmp/luci-theme-orchard_0.2.0-r5_all.ipk
 sh /usr/libexec/orchard/activate.sh
 ```
 
@@ -62,13 +64,13 @@ sh /usr/libexec/orchard/activate.sh
 将发布压缩包上传至路由器的 `/tmp`。如 Dropbear 没有 SFTP，可使用 SCP 传统模式：
 
 ```sh
-scp -O luci-theme-orchard-0.2.0-r4.tar.gz root@192.168.1.1:/tmp/
+scp -O luci-theme-orchard-0.2.0-r5.tar.gz root@192.168.1.1:/tmp/
 ```
 
 登录路由器后执行：
 
 ```sh
-tar -xzf /tmp/luci-theme-orchard-0.2.0-r4.tar.gz -C /tmp
+tar -xzf /tmp/luci-theme-orchard-0.2.0-r5.tar.gz -C /tmp
 sh /tmp/luci-theme-orchard/scripts/install.sh --activate
 ```
 

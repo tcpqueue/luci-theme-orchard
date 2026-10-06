@@ -137,6 +137,12 @@ body.orchard {
 .orchard .cbi-button:disabled { opacity: .5; cursor: default; }
 .orchard .cbi-page-actions { border: 0; border-top: 1px solid var(--o-line); background: transparent; padding: 17px 0; margin-top: 25px; }
 .orchard .cbi-page-actions > * { margin-left: 7px; }
+/* Legacy CBI forms give the secondary Save button its own background. */
+.orchard .cbi-page-actions .cbi-button-save {
+ background: var(--o-raised); color: var(--o-text); border-color: var(--o-line);
+ box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+.orchard .cbi-page-actions .cbi-button-save:hover { background: var(--o-control); }
 .orchard .tabs,.orchard .cbi-tabmenu { background: var(--o-segmented); display: flex; flex-wrap: nowrap; gap: 2px; padding: 3px; border: 1px solid var(--o-line); border-radius: 9px; width: fit-content; max-width: 100%; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; margin: 0 0 22px; }
 .orchard .tabs::-webkit-scrollbar,.orchard .cbi-tabmenu::-webkit-scrollbar { display: none; }
 .orchard .tabs li,.orchard .cbi-tabmenu li { margin: 0; flex: 0 0 auto; height: auto; max-width: none; font-size: 13px; font-weight: 500; border: 1px solid transparent; border-radius: 6px; background: transparent; }
@@ -276,6 +282,65 @@ body.orchard.modal-overlay-active { overflow: hidden; }
  .o-traffic-card,.o-system-card { padding: 20px; } .o-traffic-rates { gap: 35px; }
  .o-traffic-rates strong { font-size: 22px; } .o-chart { height: 110px; }
  .o-clients-table { min-width: 580px; } .o-middle-grid { gap: 15px; margin-bottom: 15px; }
+}
+/* Native nftables rule chains use their own markup instead of CBI sections. */
+.orchard[data-page="admin-status-nftables"] #view { max-width: 1440px; margin-inline: auto; }
+.orchard .nft-table { margin-bottom: 30px; }
+.orchard .nft-table > h3 { font-size: 21px; font-weight: 600; letter-spacing: -.5px; margin: 0 0 18px; }
+.orchard .nft-chains { display: grid; gap: 16px; }
+.orchard .nft-chain {
+ padding: 20px 22px 8px; min-width: 0; border: 1px solid var(--o-line); border-radius: var(--o-radius);
+ background: var(--o-surface); box-shadow: var(--o-shadow);
+}
+.orchard .nft-chain > h4 {
+ display: flex; align-items: center; gap: 9px; margin: 0 0 14px; font-size: 15px; font-weight: 600;
+ line-height: 1.5; overflow-wrap: anywhere; scroll-margin-top: 24px;
+}
+.orchard .nft-chain > h4::before {
+ content: ''; flex: 0 0 19px; height: 21px; background: var(--o-blue);
+ mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z'/%3E%3Cpath d='m8 12 3 3 5-6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.orchard .nft-chain > h4:target { color: var(--o-blue); }
+.orchard .nft-chain-hook { padding: 10px 12px; margin-bottom: 14px; border-radius: 8px; background: var(--o-control); }
+.orchard .nft-chain-hook ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.orchard .nft-chain-hook li { color: var(--o-secondary); font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+.orchard .nft-chain-hook strong { color: var(--o-text); font-weight: 550; }
+.orchard .nft-chain .nft-rules { table-layout: fixed; margin: 0; }
+.orchard .nft-chain .nft-rules .th { padding: 10px 8px; font-size: 11px; border-top: 0; }
+/* The native view injects an important cell-padding rule after theme assets. */
+.orchard .nft-chain .nft-rules tr > td { padding: 8px !important; vertical-align: top; }
+.orchard .nft-rules .ifacebadge {
+ display: inline-block; max-width: 100%; margin: 3px 4px 3px 0; padding: 4px 7px;
+ color: var(--o-text); background: var(--o-control); border: 0; border-radius: 6px;
+ font-size: 12px; line-height: 1.55; white-space: normal; overflow-wrap: anywhere; box-shadow: none;
+}
+.orchard .nft-rules .td:nth-child(2) .ifacebadge { background: var(--o-blue-soft); }
+.orchard .nft-rules .ifacebadge > var { font-style: normal; color: var(--o-secondary); }
+.orchard .nft-rules .ifacebadge strong { font-weight: 550; }
+.orchard .nft-rules .nft-comment,.orchard .nft-rules .nft-counter { color: var(--o-secondary); background: transparent; padding-inline: 5px; }
+.orchard .nft-rules :is(.nft-set,.nft-list,.nft-set-items,.nft-list-items) { max-width: 100%; }
+.orchard .nft-rules .cbi-tooltip { text-align: left; }
+@media (max-width: 760px) {
+ .orchard .nft-table > h3 { font-size: 18px; }
+ .orchard .nft-chain { padding: 16px 12px 6px; border-radius: 13px; }
+ .orchard .nft-chain > h4 { font-size: 14px; }
+ .orchard .nft-chain .nft-rules { display: table; }
+ .orchard .nft-chain .nft-rules tr > td { padding: 6px !important; }
+ .orchard .nft-rules .ifacebadge { font-size: 11px; padding: 3px 5px; }
+}
+/* Keep native overview containers in place so LuCI polling can replace their contents. */
+@media (min-width: 1100px) {
+ .orchard[data-page="admin-status-overview"] #view.o-status-grid {
+  display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); gap: 18px;
+ }
+ .orchard #view.o-status-grid > .cbi-section { grid-column: 1 / -1; margin-bottom: 0; }
+ .orchard #view.o-status-grid > .o-status-system { grid-column: 1; grid-row: 1 / span 2; }
+ .orchard #view.o-status-grid > .o-status-memory { grid-column: 2; grid-row: 1; }
+ .orchard #view.o-status-grid > .o-status-storage { grid-column: 2; grid-row: 2; }
+ .orchard #view.o-status-grid > :is(.o-status-system,.o-status-memory,.o-status-storage) .table { table-layout: fixed; margin-bottom: 0; }
+ .orchard #view.o-status-grid > :is(.o-status-system,.o-status-memory,.o-status-storage) .td { padding: 10px; overflow-wrap: anywhere; }
+ .orchard #view.o-status-grid > :is(.o-status-memory,.o-status-storage) .td { padding-top: 8px; padding-bottom: 8px; }
+ .orchard #view.o-status-grid > :is(.o-status-system,.o-status-memory,.o-status-storage) .td:first-child { width: 28%; }
 }
 @media (min-width: 1500px) { .orchard #maincontent.container { padding-left: 52px; padding-right: 52px; } .orchard-toolbar,.orchard-footer { padding-left: 52px; padding-right: 52px; } }
 @media (max-width: 1100px) { :root { --o-sidebar-width: 215px; } .orchard-toolbar { padding: 0 25px; } .orchard #maincontent.container { padding: 28px 25px 15px; } .orchard-footer { padding-left: 25px; padding-right: 25px; } }
