@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Orchard · OpenWrt 主题预览</title>
+ <script src="../htdocs/luci-static/orchard/orchard.js"></script>
+ <link rel="stylesheet" href="../htdocs/luci-static/orchard/base.css">
+ <link rel="stylesheet" href="../htdocs/luci-static/orchard/cascade.css">
+ <link rel="stylesheet" href="preview.css">
+ <link rel="icon" href="../htdocs/luci-static/orchard/logo.svg">
+</head>
+<body class="orchard">
+ <a href="#maincontent" class="orchard-skip">跳至内容</a>
+ <aside class="orchard-sidebar" id="orchard-sidebar" aria-label="导航">
+  <a class="orchard-brand" href="#overview"><img src="../htdocs/luci-static/orchard/logo.svg" width="42" height="42" alt=""><span><strong>Orchard</strong><small>路由器设置</small></span></a>
+  <nav id="orchard-menu" aria-label="主菜单"></nav>
+  <div class="orchard-sidebar-bottom"><div class="orchard-appearance" role="group" aria-label="外观"><button type="button" data-appearance="light" aria-label="浅色" title="浅色"><span data-icon="sun"></span></button><button type="button" data-appearance="dark" aria-label="深色" title="深色"><span data-icon="moon"></span></button><button type="button" data-appearance="system" aria-label="跟随系统" title="跟随系统"><span data-icon="display"></span></button></div><small>Orchard <span>· LuCI</span></small></div>
+ </aside>
+ <div class="orchard-scrim" id="orchard-scrim" hidden></div>
+ <header class="orchard-toolbar"><button type="button" class="orchard-nav-toggle" id="orchard-nav-toggle" aria-label="展开导航" aria-controls="orchard-sidebar" aria-expanded="false"><span data-icon="sidebar"></span></button><div class="orchard-location"><span>OpenWrt</span><span class="orchard-location-divider">/</span><strong id="orchard-location-title">总览</strong></div><div id="indicators"><span>主题预览</span></div></header>
+ <main id="maincontent" class="container" tabindex="-1"></main>
+ <footer class="orchard-footer"><span>OpenWrt 24.10+ <span class="orchard-footer-separator">·</span> Orchard 0.2.0-r4</span><span>本地演示，所有操作仅保存在浏览器</span></footer>
+ <div class="preview-toast" role="status" hidden></div>
+ <script src="../htdocs/luci-static/orchard/overview-ui.js"></script><script src="preview.js"></script>
+</body>
+</html>
