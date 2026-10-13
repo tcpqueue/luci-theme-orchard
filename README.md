@@ -1,4 +1,4 @@
-# Orchard 0.2.0-r5
+# Orchard 0.3.0-r1
 
 面向 OpenWrt 24.10 及之后版本的 LuCI 主题。界面借鉴 macOS 系统设置的分组、侧栏、圆角和控件层级，采用原生 HTML、CSS 与 JavaScript。路由器无需安装 Node.js，也不依赖 CDN、在线字体或前端框架。
 
@@ -40,18 +40,25 @@ node preview/server.mjs
 
 安装前需已具备现代 LuCI、`luci-mod-status` 与 `rpcd-mod-file`。仅含旧版 Lua 模板的 LuCI 不在此版本的适配范围内。
 
-OpenWrt / ImmortalWrt 24.10 推荐使用 `.ipk`。本次软件包由 OpenWrt 24.10.4 官方 SDK 编译，已经在 ImmortalWrt 测试机实际安装、升级、卸载和重新安装。软件包架构为 `all`，界面资源不含平台相关的可执行程序。
+OpenWrt / ImmortalWrt 24.10 使用 `.ipk`，25.12 使用 `.apk`。0.3.0 在 ImmortalWrt 25.12.2 上以 apk 安装并检查了登录、状态、系统、网络、防火墙及 Lua 兼容插件页面；24.10 的安装、升级和卸载流程沿用 0.2.0 的实机验证。软件包架构为 `all`，界面资源不含平台相关的可执行程序。
 
 上传软件包：
 
 ```sh
-scp -O luci-theme-orchard_0.2.0-r5_all.ipk root@192.168.1.1:/tmp/
+scp -O luci-theme-orchard_0.3.0-r1_all.ipk root@192.168.1.1:/tmp/
 ```
 
 在路由器上安装并激活：
 
 ```sh
-opkg install /tmp/luci-theme-orchard_0.2.0-r5_all.ipk
+opkg install /tmp/luci-theme-orchard_0.3.0-r1_all.ipk
+sh /usr/libexec/orchard/activate.sh
+```
+
+25.12 上传 `.apk` 后执行：
+
+```sh
+apk add --allow-untrusted /tmp/luci-theme-orchard-0.3.0-r1.apk
 sh /usr/libexec/orchard/activate.sh
 ```
 
@@ -64,13 +71,13 @@ sh /usr/libexec/orchard/activate.sh
 将发布压缩包上传至路由器的 `/tmp`。如 Dropbear 没有 SFTP，可使用 SCP 传统模式：
 
 ```sh
-scp -O luci-theme-orchard-0.2.0-r5.tar.gz root@192.168.1.1:/tmp/
+scp -O luci-theme-orchard-0.3.0-r1.tar.gz root@192.168.1.1:/tmp/
 ```
 
 登录路由器后执行：
 
 ```sh
-tar -xzf /tmp/luci-theme-orchard-0.2.0-r5.tar.gz -C /tmp
+tar -xzf /tmp/luci-theme-orchard-0.3.0-r1.tar.gz -C /tmp
 sh /tmp/luci-theme-orchard/scripts/install.sh --activate
 ```
 
@@ -118,7 +125,7 @@ make menuconfig
 make package/luci-theme-orchard/compile V=s
 ```
 
-在 menuconfig 的 LuCI 主题分类选择 `luci-theme-orchard`。24.10 构建产物为 `.ipk`；采用 apk 的版本应由对应 SDK 构建其原生包。本次已完成 24.10.4 SDK 的 `.ipk` 构建，未提供或验证 `.apk`。
+在 menuconfig 的 LuCI 主题分类选择 `luci-theme-orchard`。24.10 构建产物为 `.ipk`，25.12 构建产物为 `.apk`。
 
 Windows/WSL 下应把源码复制到 Linux 原生目录（如 `~/projects/`）再运行构建。`/mnt/` 只用于文件传输。
 
@@ -143,6 +150,10 @@ sh tests/staging.sh
 第一项验证 CPU 与流量采样、轮询挂载与卸载、接口变化、计数器回零、无 WAN、重启、租约过期、只读 ACL 与 JavaScript 语法。第二项验证深层插件菜单的页签顺序、标准类名、URL 与选中状态。第三项验证 shell 语法、安装目录、回退脚本及离线安装保护。`DESTDIR` 可将主题装入临时目录，不能用来激活主题。
 
 具体校验记录见 `VALIDATION.md`。自定义插件的私有 CSS 可能需要按页面补充适配；未经实机验证的固件与插件不声明完全兼容。
+
+## 0.3.0 更新
+
+视觉细化并适配 25.12，详见 [更新记录](CHANGELOG.md)：系统色板与深色强调色、中文字体与字重、白底输入框与统一控件宽度、复选框对齐、紧凑侧栏、登录页布局、表头对齐。
 
 ## 0.2.0 更新
 

@@ -1,8 +1,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-theme-orchard
-PKG_VERSION:=0.2.0
-PKG_RELEASE:=5
+PKG_VERSION:=0.3.0
+PKG_RELEASE:=1
 PKG_LICENSE:=Apache-2.0
 LUCI_TITLE:=Orchard - a calm, native-style LuCI theme
 LUCI_DEPENDS:=+luci-base +luci-mod-status +rpcd-mod-file
